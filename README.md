@@ -1,4 +1,4 @@
-# Make Your Blackjack Code More Testable
+# Clean Code Part 2
 
 This is the starter code base for the hexagonal portion of the Clean Code Course.
 
