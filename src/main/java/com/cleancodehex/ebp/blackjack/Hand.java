@@ -2,7 +2,6 @@ package com.cleancodehex.ebp.blackjack;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.fusesource.jansi.Ansi.ansi;
 
@@ -35,23 +34,16 @@ public class Hand {
         return handValue;
     }
 
-    public String displayFaceUpCard() {
-        return ConsoleCard.display(cards.get(0));
+    public List<Card> getCards() {
+        return cards;
     }
 
     public boolean dealerMustDrawCard() {
         return value() <= 16;
     }
 
-    public void display() {
-        System.out.println(cards.stream()
-                                .map(ConsoleCard::display)
-                                .collect(Collectors.joining(
-                                        ansi().cursorUp(6).cursorRight(1).toString())));
-    }
-
     public void drawFrom(Deck deck) {
-        cards.add(deck.draw());
+        getCards().add(deck.draw());
     }
 
     public boolean isBusted() {

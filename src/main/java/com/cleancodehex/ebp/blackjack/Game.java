@@ -146,14 +146,14 @@ public class Game {
     private void displayGameState() {
         System.out.print(ansi().eraseScreen().cursor(1, 1));
         System.out.println("Dealer has: ");
-        System.out.println(dealerHand.displayFaceUpCard());
+        System.out.println(ConsoleHand.displayFaceUpCard(dealerHand));
 
         // second card is the hole card, which is hidden, or "face down"
         displayBackOfCard();
 
         System.out.println();
         System.out.println("Player has: ");
-        playerHand.display();
+        System.out.println(ConsoleHand.cardsAsString(playerHand));
         System.out.println(" (" + playerHand.displayValue() + ")");
     }
 
@@ -174,12 +174,12 @@ public class Game {
     private void displayFinalGameState() {
         System.out.print(ansi().eraseScreen().cursor(1, 1));
         System.out.println("Dealer has: ");
-        dealerHand.display();
+        System.out.println(ConsoleHand.cardsAsString(dealerHand));
         System.out.println(" (" + dealerHand.displayValue() + ")");
 
         System.out.println();
         System.out.println("Player has: ");
-        playerHand.display();
+        System.out.println(ConsoleHand.cardsAsString(playerHand));
         System.out.println(" (" + playerHand.displayValue() + ")");
     }
 
