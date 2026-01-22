@@ -1,5 +1,8 @@
-package com.cleancodehex.ebp.blackjack;
+package com.cleancodehex.ebp.blackjack.adapter.in.console;
 
+import com.cleancodehex.ebp.blackjack.domain.Card;
+import com.cleancodehex.ebp.blackjack.domain.Rank;
+import com.cleancodehex.ebp.blackjack.domain.Suit;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

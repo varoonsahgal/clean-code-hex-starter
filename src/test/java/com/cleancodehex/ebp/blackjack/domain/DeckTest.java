@@ -1,4 +1,4 @@
-package com.cleancodehex.ebp.blackjack;
+package com.cleancodehex.ebp.blackjack.domain;
 
 import org.junit.jupiter.api.Test;
 

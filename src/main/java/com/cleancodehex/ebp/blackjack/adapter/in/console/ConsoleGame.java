@@ -1,15 +1,10 @@
-package com.cleancodehex.ebp.blackjack;
+package com.cleancodehex.ebp.blackjack.adapter.in.console;
 
+import com.cleancodehex.ebp.blackjack.domain.Game;
 import org.fusesource.jansi.Ansi;
 import org.fusesource.jansi.AnsiConsole;
 
-import java.util.Scanner;
-
 import static org.fusesource.jansi.Ansi.ansi;
-
-// what should Game be responsible for in a BlackJack game?
-// it runs the game loop - the interaction between player and dealer
-// it's the orchestrator!
 
 // all of the display related logic in this class technically does not
 // really belong to the domain of GAME, because Game should be UI agnostic
@@ -18,18 +13,17 @@ import static org.fusesource.jansi.Ansi.ansi;
 // would need to be removed/refactored out...or we might end up adding code
 // that talks to the web in this file as well...
 
-//what we want to do instead is maintain the Business logic here AND ONLY
+// what we want to do instead is maintain the Business logic here AND ONLY
 // the business logic
 // this class - should NOT know anything about the external world...
 // so the Game class would be INSIDE the hexagon, and the UI stuff would be OUTSIDE the hexagon
 // in a separate class that we call an adapter..
 
-public class Game {
+public class ConsoleGame {
 
-    private final Deck deck;
-
-    private final Hand dealerHand = new Hand();
-    private final Hand playerHand = new Hand();
+    private final Game game;
+    private final ConsoleHand consoleDealer;
+    private final ConsoleHand consolePlayer;
 
     public static void main(String[] args) {
         displayWelcomeScreen();
@@ -45,9 +39,8 @@ public class Game {
     }
 
     private static void playGame() {
-        Game game = new Game();
-        game.initialDeal();
-        game.play();
+        ConsoleGame consoleGame = new ConsoleGame();
+        consoleGame.initialDealAndPlay();
     }
 
     private static void waitForEnterFromUser() {
@@ -69,92 +62,71 @@ public class Game {
                                    .fgBlack().a(" BlackJack game"));
     }
 
-    public Game() {
-        deck = new Deck();
+    public ConsoleGame() {
+        game = new Game();
+        consoleDealer = new ConsoleHand(game.getDealerHand());
+        consolePlayer = new ConsoleHand(game.getPlayerHand());
     }
 
-    public void initialDeal() {
-        dealRoundOfCards();
-        dealRoundOfCards();
-    }
-
-    public void play() {
-        playerTurn();
-
+    public void initialDealAndPlay() {
+        game.initialDeal();
+        playerTurnWithDisplay();
+        game.getDealerHand().dealerMustDrawCard();
         dealerTurn();
-
         displayFinalGameState();
-
-        determineOutcome();
-    }
-
-    private void dealRoundOfCards() {
-        // why: players first because this is the rule
-        playerHand.drawFrom(deck);
-        dealerHand.drawFrom(deck);
-    }
-
-    private void determineOutcome() {
-        if (playerHand.isBusted()) {
-            System.out.println("You Busted, so you lose.  💸");
-        } else if (dealerHand.isBusted()) {
-            System.out.println("Dealer went BUST, Player wins! Yay for you!! 💵");
-        } else if (playerHand.beats(dealerHand)) {
-            System.out.println("You beat the Dealer! 💵");
-        } else if (playerHand.pushes(dealerHand)) {
-            System.out.println("Push: Nobody wins, we'll call it even.");
-        } else {
-            System.out.println("You lost to the Dealer. 💸");
-        }
+        displayOutcome();
     }
 
     private void dealerTurn() {
-        // Dealer makes its choice automatically based on a simple heuristic (<=16 must hit, =>17 must stand)
-        if (!playerHand.isBusted()) {
-            while (dealerHand.dealerMustDrawCard()) {
-                dealerHand.drawFrom(deck);
+        if (!game.getPlayerHand().isBusted()) {
+            while (game.getDealerHand().dealerMustDrawCard()) {
+                game.getDealerHand().drawFrom(null);
             }
         }
     }
 
-    private void playerTurn() {
-        // get Player's decision: hit until they stand, then they're done (or they go bust)
-
-        while (!playerHand.isBusted()) {
+    private void playerTurnWithDisplay() {
+        while (!game.getPlayerHand().isBusted()) {
             displayGameState();
-            String playerChoice = inputFromPlayer().toLowerCase();
+            System.out.println("[H]it or [S]tand?");
+            String playerChoice = new java.util.Scanner(System.in).nextLine().toLowerCase();
             if (playerChoice.startsWith("s")) {
                 break;
             }
             if (playerChoice.startsWith("h")) {
-                playerHand.drawFrom(deck);
-                if (playerHand.isBusted()) {
-                    return;
-                }
+                game.getPlayerHand().drawFrom(null);
             } else {
                 System.out.println("You need to [H]it or [S]tand");
             }
         }
     }
 
-    private String inputFromPlayer() {
-        System.out.println("[H]it or [S]tand?");
-        Scanner scanner = new Scanner(System.in);
-        return scanner.nextLine();
+    private void displayOutcome() {
+        if (game.getPlayerHand().isBusted()) {
+            System.out.println("You Busted, so you lose.  💸");
+        } else if (game.getDealerHand().isBusted()) {
+            System.out.println("Dealer went BUST, Player wins! Yay for you!! 💵");
+        } else if (game.getPlayerHand().beats(game.getDealerHand())) {
+            System.out.println("You beat the Dealer! 💵");
+        } else if (game.getPlayerHand().pushes(game.getDealerHand())) {
+            System.out.println("Push: Nobody wins, we'll call it even.");
+        } else {
+            System.out.println("You lost to the Dealer. 💸");
+        }
     }
 
     private void displayGameState() {
         System.out.print(ansi().eraseScreen().cursor(1, 1));
         System.out.println("Dealer has: ");
-        System.out.println(dealerHand.displayFaceUpCard());
+        System.out.println(consoleDealer.displayFaceUpCard());
 
         // second card is the hole card, which is hidden, or "face down"
         displayBackOfCard();
 
         System.out.println();
         System.out.println("Player has: ");
-        playerHand.display();
-        System.out.println(" (" + playerHand.displayValue() + ")");
+        consolePlayer.display();
+        System.out.println(" (" + consolePlayer.displayValue() + ")");
     }
 
     private void displayBackOfCard() {
@@ -174,13 +146,12 @@ public class Game {
     private void displayFinalGameState() {
         System.out.print(ansi().eraseScreen().cursor(1, 1));
         System.out.println("Dealer has: ");
-        dealerHand.display();
-        System.out.println(" (" + dealerHand.displayValue() + ")");
+        consoleDealer.display();
+        System.out.println(" (" + consoleDealer.displayValue() + ")");
 
         System.out.println();
         System.out.println("Player has: ");
-        playerHand.display();
-        System.out.println(" (" + playerHand.displayValue() + ")");
+        consolePlayer.display();
+        System.out.println(" (" + consolePlayer.displayValue() + ")");
     }
-
 }

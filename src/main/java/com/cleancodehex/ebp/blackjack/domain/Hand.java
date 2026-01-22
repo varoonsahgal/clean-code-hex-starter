@@ -1,10 +1,7 @@
-package com.cleancodehex.ebp.blackjack;
+package com.cleancodehex.ebp.blackjack.domain;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-
-import static org.fusesource.jansi.Ansi.ansi;
 
 public class Hand {
     private final List<Card> cards = new ArrayList<>();
@@ -35,19 +32,12 @@ public class Hand {
         return handValue;
     }
 
-    public String displayFaceUpCard() {
-        return ConsoleCard.display(cards.get(0));
+    public List<Card> getCards() {
+        return cards;
     }
 
     public boolean dealerMustDrawCard() {
         return value() <= 16;
-    }
-
-    public void display() {
-        System.out.println(cards.stream()
-                                .map(ConsoleCard::display)
-                                .collect(Collectors.joining(
-                                        ansi().cursorUp(6).cursorRight(1).toString())));
     }
 
     public void drawFrom(Deck deck) {
@@ -64,10 +54,6 @@ public class Hand {
 
     public boolean beats(Hand hand) {
         return hand.value() < value();
-    }
-
-    public String displayValue() {
-        return String.valueOf(value());
     }
 
     public boolean valueEquals(int target) {

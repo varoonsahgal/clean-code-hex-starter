@@ -1,5 +1,7 @@
-package com.cleancodehex.ebp.blackjack;
+package com.cleancodehex.ebp.blackjack.adapter.in.console;
 
+import com.cleancodehex.ebp.blackjack.domain.Card;
+import com.cleancodehex.ebp.blackjack.domain.Rank;
 import org.fusesource.jansi.Ansi;
 
 import static org.fusesource.jansi.Ansi.ansi;

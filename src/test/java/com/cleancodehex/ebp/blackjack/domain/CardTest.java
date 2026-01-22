@@ -1,9 +1,8 @@
-package com.cleancodehex.ebp.blackjack;
+package com.cleancodehex.ebp.blackjack.domain;
 
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.fusesource.jansi.Ansi.ansi;
 
 class CardTest {
 
@@ -41,12 +40,12 @@ class CardTest {
         Card diamondsCard = new Card(Suit.DIAMONDS, DUMMY_RANK);
 
         // when we ask for its display representation
-        String ansiRedString = ansi().fgRed().toString();
+        String ansiRedString = "\u001B[31m";
 
         // then we expect a red color ansi sequence
-        assertThat(ConsoleCard.display(heartsCard))
+        assertThat(com.cleancodehex.ebp.blackjack.adapter.in.console.ConsoleCard.display(heartsCard))
                 .contains(ansiRedString);
-        assertThat(ConsoleCard.display(diamondsCard))
+        assertThat(com.cleancodehex.ebp.blackjack.adapter.in.console.ConsoleCard.display(diamondsCard))
                 .contains(ansiRedString);
     }
 

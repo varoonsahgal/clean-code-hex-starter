@@ -1,6 +1,4 @@
-package com.cleancodehex.ebp.blackjack;
-
-import static org.fusesource.jansi.Ansi.ansi;
+package com.cleancodehex.ebp.blackjack.domain;
 
 public class Card {
     private final Suit suit;

@@ -1,4 +1,4 @@
-package com.cleancodehex.ebp.blackjack;
+package com.cleancodehex.ebp.blackjack.domain;
 
 public enum Suit {
     HEARTS("♥", true),
@@ -18,7 +18,7 @@ public enum Suit {
         return symbol;
     }
 
-    boolean isRed() {
+    public boolean isRed() {
         return isRed;
     }
 }

@@ -1,4 +1,4 @@
-package com.cleancodehex.ebp.blackjack;
+package com.cleancodehex.ebp.blackjack.domain;
 
 public enum Rank {
     ACE(1, "A"),
