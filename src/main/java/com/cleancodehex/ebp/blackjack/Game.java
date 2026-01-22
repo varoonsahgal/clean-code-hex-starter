@@ -7,6 +7,23 @@ import java.util.Scanner;
 
 import static org.fusesource.jansi.Ansi.ansi;
 
+// what should Game be responsible for in a BlackJack game?
+// it runs the game loop - the interaction between player and dealer
+// it's the orchestrator!
+
+// all of the display related logic in this class technically does not
+// really belong to the domain of GAME, because Game should be UI agnostic
+// and ONLY focused on business logic.
+// imagine if we want to add a GUI or Web interface later - all this ANSI stuff
+// would need to be removed/refactored out...or we might end up adding code
+// that talks to the web in this file as well...
+
+//what we want to do instead is maintain the Business logic here AND ONLY
+// the business logic
+// this class - should NOT know anything about the external world...
+// so the Game class would be INSIDE the hexagon, and the UI stuff would be OUTSIDE the hexagon
+// in a separate class that we call an adapter..
+
 public class Game {
 
     private final Deck deck;
