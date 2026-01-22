@@ -93,16 +93,24 @@ public class ConsoleGame {
     }
 
     private void displayOutcome() {
-        if (game.getPlayerHand().isBusted()) {
-            System.out.println("You Busted, so you lose.  💸");
-        } else if (game.getDealerHand().isBusted()) {
-            System.out.println("Dealer went BUST, Player wins! Yay for you!! 💵");
-        } else if (game.getPlayerHand().beats(game.getDealerHand())) {
-            System.out.println("You beat the Dealer! 💵");
-        } else if (game.getPlayerHand().pushes(game.getDealerHand())) {
-            System.out.println("Push: Nobody wins, we'll call it even.");
-        } else {
-            System.out.println("You lost to the Dealer. 💸");
+        String outcome = game.determineOutcome();
+        
+        switch(outcome) {
+            case "player busted":
+                System.out.println("You Busted, so you lose.  💸");
+                break;
+            case "dealer busted":
+                System.out.println("Dealer went BUST, Player wins! Yay for you!! 💵");
+                break;
+            case "player wins":
+                System.out.println("You beat the Dealer! 💵");
+                break;
+            case "push":
+                System.out.println("Push: Nobody wins, we'll call it even.");
+                break;
+            case "dealer wins":
+                System.out.println("You lost to the Dealer. 💸");
+                break;
         }
     }
 

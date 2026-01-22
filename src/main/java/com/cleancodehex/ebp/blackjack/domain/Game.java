@@ -15,6 +15,10 @@ public class Game {
         deck = new Deck();
     }
 
+    public Game(Deck deck) {
+        this.deck = deck;
+    }
+
     public void initialDeal() {
         dealRoundOfCards();
         dealRoundOfCards();
@@ -27,6 +31,10 @@ public class Game {
 
     public void playerHitRequest() {
         playerHand.drawFrom(deck);
+    }
+
+    public void playerStands() {
+        // Player has decided to stand
     }
 
     public void dealerTakeTurn() {
@@ -47,17 +55,17 @@ public class Game {
         dealerHand.drawFrom(deck);
     }
 
-    public void determineOutcome() {
+    public String determineOutcome() {
         if (playerHand.isBusted()) {
-            // outcome: player busted
+            return "player busted";
         } else if (dealerHand.isBusted()) {
-            // outcome: dealer busted
+            return "dealer busted";
         } else if (playerHand.beats(dealerHand)) {
-            // outcome: player wins
+            return "player wins";
         } else if (playerHand.pushes(dealerHand)) {
-            // outcome: push
+            return "push";
         } else {
-            // outcome: dealer wins
+            return "dealer wins";
         }
     }
 
