@@ -71,18 +71,9 @@ public class ConsoleGame {
     public void initialDealAndPlay() {
         game.initialDeal();
         playerTurnWithDisplay();
-        game.getDealerHand().dealerMustDrawCard();
-        dealerTurn();
+        game.dealerTakeTurn();
         displayFinalGameState();
         displayOutcome();
-    }
-
-    private void dealerTurn() {
-        if (!game.getPlayerHand().isBusted()) {
-            while (game.getDealerHand().dealerMustDrawCard()) {
-                game.getDealerHand().drawFrom(null);
-            }
-        }
     }
 
     private void playerTurnWithDisplay() {
@@ -94,7 +85,7 @@ public class ConsoleGame {
                 break;
             }
             if (playerChoice.startsWith("h")) {
-                game.getPlayerHand().drawFrom(null);
+                game.playerHitRequest();
             } else {
                 System.out.println("You need to [H]it or [S]tand");
             }

@@ -27,6 +27,14 @@ public class Game {
         dealerTurn();
     }
 
+    public void playerHitRequest() {
+        playerHand.drawFrom(deck);
+    }
+
+    public void dealerTakeTurn() {
+        dealerTurn();
+    }
+
     public Hand getDealerHand() {
         return dealerHand;
     }
