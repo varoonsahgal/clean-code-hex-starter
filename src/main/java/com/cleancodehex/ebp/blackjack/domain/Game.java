@@ -1,7 +1,5 @@
 package com.cleancodehex.ebp.blackjack.domain;
 
-import java.util.Scanner;
-
 // what should Game be responsible for in a BlackJack game?
 // it runs the game loop - the interaction between player and dealer
 // it's the orchestrator!
